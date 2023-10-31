@@ -1,0 +1,1 @@
+console.log(require("fs").readFileSync("./input.txt", "utf8").trim().split("").map((char, i, arr) => new Set(arr.slice(i, i + 4)).size === arr.slice(i, i + 4).length ? i + 4 : null).filter((item) => item !== null)[0]);
