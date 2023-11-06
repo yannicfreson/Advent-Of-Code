@@ -17,17 +17,9 @@ function main() {
 }
 
 function partOne(input) {
-  let floor = 0;
-
-  input.split("").forEach((char) => {
-    if (char === "(") {
-      floor++;
-    } else if (char === ")") {
-      floor--;
-    }
-  });
-
-  return floor;
+  return input
+    .split("")
+    .reduce((acc, char) => (char === "(" ? acc + 1 : acc - 1), 0);
 }
 
 function partTwo(input) {
