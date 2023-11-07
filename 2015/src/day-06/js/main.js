@@ -19,60 +19,82 @@ function main() {
 }
 
 function partOne(input) {
-  let grid = [];
-
-  let x = 0;
-  let y = 0;
-  for (let i = 0; i < 1000000; i++) {
-    grid.push({ id: i, x: x, y: y, value: false });
-    x++;
-    if (x > 999) {
-      x = 0;
-      y++;
-    }
-  }
+  let grid = Array(1000)
+    .fill()
+    .map(() => Array(1000).fill(false));
 
   input.split("\n").forEach((line) => {
-    const [_, command, x1, y1, x2, y2] = line.match(
+    let [_, command, x1, y1, x2, y2] = line.match(
       /(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)/
     );
 
-    let lights = grid.filter((light) => {
-      return light.x >= x1 && light.x <= x2 && light.y >= y1 && light.y <= y2;
-    });
+    x1 = parseInt(x1);
+    y1 = parseInt(y1);
+    x2 = parseInt(x2);
+    y2 = parseInt(y2);
 
-    lights.forEach((light) => {
-      switch (command) {
-        case "turn on":
-          light.value = true;
-          break;
-        case "turn off":
-          light.value = false;
-          break;
-        case "toggle":
-          light.value = !light.value;
-          break;
+    for (let x = x1; x <= x2; x++) {
+      for (let y = y1; y <= y2; y++) {
+        switch (command) {
+          case "turn on":
+            grid[x][y] = true;
+            break;
+          case "turn off":
+            grid[x][y] = false;
+            break;
+          case "toggle":
+            grid[x][y] = !grid[x][y];
+            break;
+        }
       }
-    });
-
-    // put lights back in grid
-
-    lights.forEach((light) => {
-      grid[light.id] = light;
-    });
-  });
-
-  let count = 0;
-  grid.forEach((light) => {
-    if (light.value) {
-      count++;
     }
   });
 
-  return count;
+  return grid.reduce((acc, row) => {
+    return acc + row.filter((light) => light).length;
+  }, 0);
 }
 
 function partTwo(input) {
+  let grid = Array(1000)
+    .fill()
+    .map(() => Array(1000).fill(0));
+
+  input.split("\n").forEach((line) => {
+    let [_, command, x1, y1, x2, y2] = line.match(
+      /(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)/
+    );
+
+    x1 = parseInt(x1);
+    y1 = parseInt(y1);
+    x2 = parseInt(x2);
+    y2 = parseInt(y2);
+
+    for (let x = x1; x <= x2; x++) {
+      for (let y = y1; y <= y2; y++) {
+        switch (command) {
+          case "turn on":
+            grid[x][y]++;
+            break;
+          case "turn off":
+            if (grid[x][y] > 0) {
+              grid[x][y]--;
+            }
+            break;
+          case "toggle":
+            grid[x][y] += 2;
+            break;
+        }
+      }
+    }
+  });
+
+  return grid.reduce((acc, row) => {
+    return acc + row.reduce((acc, light) => acc + light, 0);
+  }, 0);
+}
+
+function partTwoo(input) {
   let grid = [];
 
   let x = 0;
