@@ -20,10 +20,15 @@ function main() {
 
 function partOne(input) {
   let grid = [];
-  for (let i = 0; i < 1000; i++) {
-    grid.push([]);
-    for (let j = 0; j < 1000; j++) {
-      grid[i].push(false);
+
+  let x = 0;
+  let y = 0;
+  for (let i = 0; i < 1000000; i++) {
+    grid.push({ id: i, x: x, y: y, value: false });
+    x++;
+    if (x > 999) {
+      x = 0;
+      y++;
     }
   }
 
@@ -32,35 +37,93 @@ function partOne(input) {
       /(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)/
     );
 
-    for (let x = x1; x <= x2; x++) {
-      for (let y = y1; y <= y2; y++) {
-        switch (command) {
-          case "turn on":
-            grid[x][y] = true;
-            break;
-          case "turn off":
-            grid[x][y] = false;
-            break;
-          case "toggle":
-            grid[x][y] = !grid[x][y];
-            break;
-        }
+    let lights = grid.filter((light) => {
+      return light.x >= x1 && light.x <= x2 && light.y >= y1 && light.y <= y2;
+    });
+
+    lights.forEach((light) => {
+      switch (command) {
+        case "turn on":
+          light.value = true;
+          break;
+        case "turn off":
+          light.value = false;
+          break;
+        case "toggle":
+          light.value = !light.value;
+          break;
       }
-    }
+    });
+
+    // put lights back in grid
+
+    lights.forEach((light) => {
+      grid[light.id] = light;
+    });
   });
 
   let count = 0;
-  grid.forEach((row) => {
-    row.forEach((cell) => {
-      if (cell) {
-        count++;
-      }
-    });
+  grid.forEach((light) => {
+    if (light.value) {
+      count++;
+    }
   });
 
   return count;
 }
 
-function partTwo(input) {}
+function partTwo(input) {
+  let grid = [];
+
+  let x = 0;
+  let y = 0;
+  for (let i = 0; i < 1000000; i++) {
+    grid.push({ id: i, x: x, y: y, value: 0 });
+    x++;
+    if (x > 999) {
+      x = 0;
+      y++;
+    }
+  }
+
+  input.split("\n").forEach((line) => {
+    const [_, command, x1, y1, x2, y2] = line.match(
+      /(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)/
+    );
+
+    let lights = grid.filter((light) => {
+      return light.x >= x1 && light.x <= x2 && light.y >= y1 && light.y <= y2;
+    });
+
+    lights.forEach((light) => {
+      switch (command) {
+        case "turn on":
+          light.value++;
+          break;
+        case "turn off":
+          if (light.value > 0) {
+            light.value--;
+          }
+          break;
+        case "toggle":
+          light.value += 2;
+          break;
+      }
+    });
+
+    // put lights back in grid
+
+    lights.forEach((light) => {
+      grid[light.id] = light;
+    });
+  });
+
+  let count = 0;
+  grid.forEach((light) => {
+    count += light.value;
+  });
+
+  return count;
+}
 
 main();
