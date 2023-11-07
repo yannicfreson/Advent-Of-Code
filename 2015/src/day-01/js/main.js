@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 
-const INPUT = fs.readFileSync("../../../../2015/data/day-1.txt", "utf8");
+const INPUT = fs.readFileSync("../../../../2015/data/day-01.txt", "utf8");
 
 function main() {
   let now = Date.now();
