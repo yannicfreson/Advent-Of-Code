@@ -44,6 +44,23 @@ function partOne(input) {
   return inputStrings.length - outputString.length;
 }
 
-function partTwo(input) {}
+function partTwo(input) {
+  let inputStrings = input.split("\n");
+  let outputStrings = [];
+
+  inputStrings.forEach((inputString) => {
+    let outputString = "";
+    inputString.split("").forEach((char) => {
+      if (char === '"' || char === "\\") {
+        outputString += `\\${char}`;
+      } else {
+        outputString += char;
+      }
+    });
+    outputStrings.push(`"${outputString}"`);
+  });
+
+  return outputStrings.join("").length - inputStrings.join("").length;
+}
 
 main();
