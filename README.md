@@ -1,7 +1,7 @@
 # Advent of Code
 👋 Hi, here are my solutions for the yearly Advent of Code[^aoc] challenges
 
-####Total ⭐️: 59
+#### Total ⭐️: 59
 
 | Day | 2015 | 2016 | 2021 | 2022 |
 | ---| ---| ---| ---| --- |
