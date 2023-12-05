@@ -283,7 +283,6 @@ function partTwo(input) {
         rangeLength: parseInt(line.split(" ")[2]),
       };
     });
-  //console.log({ seedToSoilMap });
 
   let soilToFertilizerMap = input
     .split("\n\n")[2]
@@ -296,7 +295,6 @@ function partTwo(input) {
         rangeLength: parseInt(line.split(" ")[2]),
       };
     });
-  //console.log({ soilToFertilizerMap });
 
   let fertilizerToWaterMap = input
     .split("\n\n")[3]
@@ -309,7 +307,6 @@ function partTwo(input) {
         rangeLength: parseInt(line.split(" ")[2]),
       };
     });
-  //console.log({ fertilizerToWaterMap });
 
   let waterToLightMap = input
     .split("\n\n")[4]
@@ -322,7 +319,6 @@ function partTwo(input) {
         rangeLength: parseInt(line.split(" ")[2]),
       };
     });
-  //console.log({ waterToLightMap });
 
   let lightToTemperatureMap = input
     .split("\n\n")[5]
@@ -335,7 +331,6 @@ function partTwo(input) {
         rangeLength: parseInt(line.split(" ")[2]),
       };
     });
-  //console.log({ lightToTemperatureMap });
 
   let temperatureToHumidityMap = input
     .split("\n\n")[6]
@@ -348,7 +343,6 @@ function partTwo(input) {
         rangeLength: parseInt(line.split(" ")[2]),
       };
     });
-  //console.log({ temperatureToHumidityMap });
 
   let humidityToLocationMap = input
     .split("\n\n")[7]
@@ -361,7 +355,6 @@ function partTwo(input) {
         rangeLength: parseInt(line.split(" ")[2]),
       };
     });
-  //console.log({ humidityToLocationMap });
 
   let smallestLocation = Infinity;
 
