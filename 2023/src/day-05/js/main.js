@@ -122,7 +122,6 @@ function partOne(input) {
 
   seeds.forEach((seed) => {
     // for every range in the seedToSoilMap, check if the seed is in the range
-    let soilHasBeenSet = false;
     seedToSoilMap.forEach((range) => {
       // if the seed is in the range, set its soil to the corresponding value in the destination range
       if (
@@ -132,16 +131,14 @@ function partOne(input) {
         // calculate the difference between the seed and the start of the source range
         seed.soil =
           range.destinationRangeStart + seed.seed - range.sourceRangeStart;
-        soilHasBeenSet = true;
       }
     });
     // if the seed is not in any of the ranges, set its soil to its seed value
-    if (!soilHasBeenSet) {
+    if (seed.soil === null) {
       seed.soil = seed.seed;
     }
 
     // for every range in the soilToFertilizerMap, check if the seed is in the range
-    let fertilizerHasBeenSet = false;
     soilToFertilizerMap.forEach((range) => {
       // if the seed is in the range, set its fertilizer to the corresponding value in the destination range
       if (
@@ -151,16 +148,14 @@ function partOne(input) {
         // calculate the difference between the seed and the start of the source range
         seed.fertilizer =
           range.destinationRangeStart + seed.soil - range.sourceRangeStart;
-        fertilizerHasBeenSet = true;
       }
     });
     // if the seed is not in any of the ranges, set its fertilizer to its soil value
-    if (!fertilizerHasBeenSet) {
+    if (seed.fertilizer === null) {
       seed.fertilizer = seed.soil;
     }
 
     // for every range in the fertilizerToWaterMap, check if the seed is in the range
-    let waterHasBeenSet = false;
     fertilizerToWaterMap.forEach((range) => {
       // if the seed is in the range, set its water to the corresponding value in the destination range
       if (
@@ -172,16 +167,14 @@ function partOne(input) {
           range.destinationRangeStart +
           seed.fertilizer -
           range.sourceRangeStart;
-        waterHasBeenSet = true;
       }
     });
     // if the seed is not in any of the ranges, set its water to its fertilizer value
-    if (!waterHasBeenSet) {
+    if (seed.water === null) {
       seed.water = seed.fertilizer;
     }
 
     // for every range in the waterToLightMap, check if the seed is in the range
-    let lightHasBeenSet = false;
     waterToLightMap.forEach((range) => {
       // if the seed is in the range, set its light to the corresponding value in the destination range
       if (
@@ -191,16 +184,14 @@ function partOne(input) {
         // calculate the difference between the seed and the start of the source range
         seed.light =
           range.destinationRangeStart + seed.water - range.sourceRangeStart;
-        lightHasBeenSet = true;
       }
     });
     // if the seed is not in any of the ranges, set its light to its water value
-    if (!lightHasBeenSet) {
+    if (seed.light === null) {
       seed.light = seed.water;
     }
 
     // for every range in the lightToTemperatureMap, check if the seed is in the range
-    let temperatureHasBeenSet = false;
     lightToTemperatureMap.forEach((range) => {
       // if the seed is in the range, set its temperature to the corresponding value in the destination range
       if (
@@ -210,16 +201,14 @@ function partOne(input) {
         // calculate the difference between the seed and the start of the source range
         seed.temperature =
           range.destinationRangeStart + seed.light - range.sourceRangeStart;
-        temperatureHasBeenSet = true;
       }
     });
     // if the seed is not in any of the ranges, set its temperature to its light value
-    if (!temperatureHasBeenSet) {
+    if (seed.temperature === null) {
       seed.temperature = seed.light;
     }
 
     // for every range in the temperatureToHumidityMap, check if the seed is in the range
-    let humidityHasBeenSet = false;
     temperatureToHumidityMap.forEach((range) => {
       // if the seed is in the range, set its humidity to the corresponding value in the destination range
       if (
@@ -231,16 +220,14 @@ function partOne(input) {
           range.destinationRangeStart +
           seed.temperature -
           range.sourceRangeStart;
-        humidityHasBeenSet = true;
       }
     });
     // if the seed is not in any of the ranges, set its humidity to its temperature value
-    if (!humidityHasBeenSet) {
+    if (seed.humidity === null) {
       seed.humidity = seed.temperature;
     }
 
     // for every range in the humidityToLocationMap, check if the seed is in the range
-    let locationHasBeenSet = false;
     humidityToLocationMap.forEach((range) => {
       // if the seed is in the range, set its location to the corresponding value in the destination range
       if (
@@ -250,11 +237,10 @@ function partOne(input) {
         // calculate the difference between the seed and the start of the source range
         seed.location =
           range.destinationRangeStart + seed.humidity - range.sourceRangeStart;
-        locationHasBeenSet = true;
       }
     });
     // if the seed is not in any of the ranges, set its location to its humidity value
-    if (!locationHasBeenSet) {
+    if (seed.location === null) {
       seed.location = seed.humidity;
     }
   });
@@ -396,7 +382,6 @@ function partTwo(input) {
       seed.location = null;
 
       // for every range in the seedToSoilMap, check if the seed is in the range
-      let soilHasBeenSet = false;
       seedToSoilMap.forEach((range) => {
         // if the seed is in the range, set its soil to the corresponding value in the destination range
         if (
@@ -406,16 +391,14 @@ function partTwo(input) {
           // calculate the difference between the seed and the start of the source range
           seed.soil =
             range.destinationRangeStart + seed.seed - range.sourceRangeStart;
-          soilHasBeenSet = true;
         }
       });
       // if the seed is not in any of the ranges, set its soil to its seed value
-      if (!soilHasBeenSet) {
+      if (seed.soil === null) {
         seed.soil = seed.seed;
       }
 
       // for every range in the soilToFertilizerMap, check if the seed is in the range
-      let fertilizerHasBeenSet = false;
       soilToFertilizerMap.forEach((range) => {
         // if the seed is in the range, set its fertilizer to the corresponding value in the destination range
         if (
@@ -425,16 +408,14 @@ function partTwo(input) {
           // calculate the difference between the seed and the start of the source range
           seed.fertilizer =
             range.destinationRangeStart + seed.soil - range.sourceRangeStart;
-          fertilizerHasBeenSet = true;
         }
       });
       // if the seed is not in any of the ranges, set its fertilizer to its soil value
-      if (!fertilizerHasBeenSet) {
+      if (seed.fertilizer === null) {
         seed.fertilizer = seed.soil;
       }
 
       // for every range in the fertilizerToWaterMap, check if the seed is in the range
-      let waterHasBeenSet = false;
       fertilizerToWaterMap.forEach((range) => {
         // if the seed is in the range, set its water to the corresponding value in the destination range
         if (
@@ -446,16 +427,14 @@ function partTwo(input) {
             range.destinationRangeStart +
             seed.fertilizer -
             range.sourceRangeStart;
-          waterHasBeenSet = true;
         }
       });
       // if the seed is not in any of the ranges, set its water to its fertilizer value
-      if (!waterHasBeenSet) {
+      if (seed.water === null) {
         seed.water = seed.fertilizer;
       }
 
       // for every range in the waterToLightMap, check if the seed is in the range
-      let lightHasBeenSet = false;
       waterToLightMap.forEach((range) => {
         // if the seed is in the range, set its light to the corresponding value in the destination range
         if (
@@ -465,16 +444,14 @@ function partTwo(input) {
           // calculate the difference between the seed and the start of the source range
           seed.light =
             range.destinationRangeStart + seed.water - range.sourceRangeStart;
-          lightHasBeenSet = true;
         }
       });
       // if the seed is not in any of the ranges, set its light to its water value
-      if (!lightHasBeenSet) {
+      if (seed.light === null) {
         seed.light = seed.water;
       }
 
       // for every range in the lightToTemperatureMap, check if the seed is in the range
-      let temperatureHasBeenSet = false;
       lightToTemperatureMap.forEach((range) => {
         // if the seed is in the range, set its temperature to the corresponding value in the destination range
         if (
@@ -484,16 +461,14 @@ function partTwo(input) {
           // calculate the difference between the seed and the start of the source range
           seed.temperature =
             range.destinationRangeStart + seed.light - range.sourceRangeStart;
-          temperatureHasBeenSet = true;
         }
       });
       // if the seed is not in any of the ranges, set its temperature to its light value
-      if (!temperatureHasBeenSet) {
+      if (seed.temperature === null) {
         seed.temperature = seed.light;
       }
 
       // for every range in the temperatureToHumidityMap, check if the seed is in the range
-      let humidityHasBeenSet = false;
       temperatureToHumidityMap.forEach((range) => {
         // if the seed is in the range, set its humidity to the corresponding value in the destination range
         if (
@@ -505,16 +480,14 @@ function partTwo(input) {
             range.destinationRangeStart +
             seed.temperature -
             range.sourceRangeStart;
-          humidityHasBeenSet = true;
         }
       });
       // if the seed is not in any of the ranges, set its humidity to its temperature value
-      if (!humidityHasBeenSet) {
+      if (seed.humidity === null) {
         seed.humidity = seed.temperature;
       }
 
       // for every range in the humidityToLocationMap, check if the seed is in the range
-      let locationHasBeenSet = false;
       humidityToLocationMap.forEach((range) => {
         // if the seed is in the range, set its location to the corresponding value in the destination range
         if (
@@ -526,11 +499,10 @@ function partTwo(input) {
             range.destinationRangeStart +
             seed.humidity -
             range.sourceRangeStart;
-          locationHasBeenSet = true;
         }
       });
       // if the seed is not in any of the ranges, set its location to its humidity value
-      if (!locationHasBeenSet) {
+      if (seed.location === null) {
         seed.location = seed.humidity;
       }
 
