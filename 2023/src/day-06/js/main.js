@@ -1,6 +1,5 @@
 // Puzzle: https://adventofcode.com/2023/day/6
 
-const { time } = require("console");
 const fs = require("fs");
 
 const INPUT = fs
