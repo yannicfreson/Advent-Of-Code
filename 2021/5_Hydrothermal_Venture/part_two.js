@@ -4,8 +4,8 @@ let lineCoords = [];
 let xMax = 0;
 let yMax = 0;
 let matrix = [];
-let diagonalCounter = 0;
 
+// same as part one, but now also consider diagonal lines
 fs.readFile("input.txt", "utf8", function (err, data) {
   // Parse input
   input = data.split("\n");
@@ -86,9 +86,9 @@ fs.readFile("input.txt", "utf8", function (err, data) {
 
       for (let row = 0; row < matrix.length; row++) {
         if (row === line.y1) {
-          for (let column = 0; column < matrix[line.y1].length; column++) {
-            if (column >= start && column <= end) {
-              matrix[row][column]++;
+          for (let col = 0; col < matrix[row].length; col++) {
+            if (col >= start && col <= end) {
+              matrix[row][col]++;
             }
           }
         }
@@ -97,100 +97,26 @@ fs.readFile("input.txt", "utf8", function (err, data) {
 
     // Is diagonal?
     if (line.x1 !== line.x2 && line.y1 !== line.y2) {
-      // Now we know it's maybe a diagonal
+      let startX, startY, endX, endY;
 
-      if (line.x1 < line.x2 && line.y1 < line.y2) {
-        // Now we know it's going DOWN and to the RIGHT
-        // But is it a diagonal?
-        if (Math.abs(line.x1 - line.x2) === Math.abs(line.y1 - line.y2)) {
-          // Omg it is!
-          let yCo = line.y1;
-          let xCo = line.x1;
-          for (
-            let amount = Math.abs(line.x1 - line.x2);
-            amount >= 0;
-            amount--
-          ) {
-            for (let row = 0; row < matrix.length; row++) {
-              for (let column = 0; column < matrix[row].length; column++) {
-                if (row === yCo && column === xCo) {
-                  matrix[row][column]++;
-                  yCo++;
-                  xCo++;
-                }
-              }
-            }
-          }
-        }
-      } else if (line.x1 > line.x2 && line.y1 < line.y2) {
-        // Now we know it's going DOWN and to the LEFT
-        // But is it a diagonal?
-        if (Math.abs(line.x1 - line.x2) === Math.abs(line.y1 - line.y2)) {
-          // Omg it is!
-          let yCo = line.y1;
-          let xCo = line.x2;
-          for (
-            let amount = Math.abs(line.x1 - line.x2);
-            amount >= 0;
-            amount--
-          ) {
-            for (let row = 0; row < matrix.length; row++) {
-              for (let column = 0; column < matrix[row].length; column++) {
-                if (row === yCo && column === xCo) {
-                  matrix[row][column]++;
-                  yCo++;
-                  xCo--;
-                }
-              }
-            }
-          }
-        }
-      } else if (line.x1 < line.x2 && line.y1 > line.y2) {
-        // Now we know it's going UP   and to the RIGHT
-        // But is it a diagonal?
-        if (Math.abs(line.x1 - line.x2) === Math.abs(line.y1 - line.y2)) {
-          // Omg it is!
-          let yCo = line.y2;
-          let xCo = line.x1;
-          for (
-            let amount = Math.abs(line.x1 - line.x2);
-            amount >= 0;
-            amount--
-          ) {
-            for (let row = 0; row < matrix.length; row++) {
-              for (let column = 0; column < matrix[row].length; column++) {
-                if (row === yCo && column === xCo) {
-                  matrix[row][column]++;
-                  yCo--;
-                  xCo++;
-                }
-              }
-            }
-          }
-        }
-      } else if (line.x1 > line.x2 && line.y1 > line.y2) {
-        // Now we know it's going UP   and to the LEFT
-        // But is it a diagonal?
-        if (Math.abs(line.x1 - line.x2) === Math.abs(line.y1 - line.y2)) {
-          // Omg it is!
-          let yCo = line.y2;
-          let xCo = line.x2;
-          for (
-            let amount = Math.abs(line.x1 - line.x2);
-            amount >= 0;
-            amount--
-          ) {
-            for (let row = 0; row < matrix.length; row++) {
-              for (let column = 0; column < matrix[row].length; column++) {
-                if (row === yCo && column === xCo) {
-                  matrix[row][column]++;
-                  yCo--;
-                  xCo--;
-                }
-              }
-            }
-          }
-        }
+      // Determine start and end of line
+      if (line.x1 < line.x2) {
+        startX = line.x1;
+        startY = line.y1;
+        endX = line.x2;
+        endY = line.y2;
+      } else {
+        startX = line.x2;
+        startY = line.y2;
+        endX = line.x1;
+        endY = line.y1;
+      }
+
+      for (let x = startX; x <= endX; x++) {
+        const y = Math.round(
+          (startY * (endX - x) + endY * (x - startX)) / (endX - startX)
+        );
+        matrix[y][x]++;
       }
     }
   });
@@ -202,25 +128,19 @@ fs.readFile("input.txt", "utf8", function (err, data) {
     }
   });
 
-  drawMatrixToConsole();
-  console.log(overlaps);
-
-  function drawMatrixToConsole() {
-    let counter = 0;
-    matrix.forEach((line) => {
-      if (counter < 500) {
-        let lineToPrint = "";
-        line.forEach((value) => {
-          if (value > 1) {
-            lineToPrint += "0";
-          } else {
-            lineToPrint += " ";
-          }
-        });
-        console.log(lineToPrint);
-        lineToPrint = "";
-        counter++;
+  // draw matrix
+  matrix.forEach((row) => {
+    row = row.map((n) => {
+      if (n === 0) {
+        return " ";
+      } else if (n === 1) {
+        return "░";
+      } else if (n > 1) {
+        return "█";
       }
     });
-  }
+    console.log(row.join(""));
+  });
+
+  console.log(overlaps);
 });
