@@ -21,13 +21,12 @@ function main() {
 
 function partOne(input) {
   let races = [];
-  // get the digits from the first line
+
   let times = input
     .split("\n")[0]
     .match(/\d+/g)
     .map((time) => parseInt(time));
 
-  // get the digits from the second line
   let distances = input
     .split("\n")[1]
     .match(/\d+/g)
@@ -47,7 +46,6 @@ function partOne(input) {
     }
   });
 
-  // multiply each race's waysToBeat together
   return races.reduce((acc, curr) => acc * curr.waysToBeat, 1);
 }
 
