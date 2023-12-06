@@ -19,33 +19,7 @@ function main() {
 }
 
 function partOne(input) {
-  let races = [];
-
-  let times = input
-    .split("\n")[0]
-    .match(/\d+/g)
-    .map((time) => parseInt(time));
-
-  let distances = input
-    .split("\n")[1]
-    .match(/\d+/g)
-    .map((distance) => parseInt(distance));
-
-  times.forEach((time, index) => {
-    races.push({ time, recordDistance: distances[index], waysToBeat: 0 });
-  });
-
-  races.forEach((race) => {
-    for (let i = 0; i < race.time; i++) {
-      let speed = i;
-      let distance = (race.time - i) * speed;
-      if (distance > race.recordDistance) {
-        race.waysToBeat++;
-      }
-    }
-  });
-
-  return races.reduce((acc, curr) => acc * curr.waysToBeat, 1);
+  return input.split("\n")[0].match(/\d+/g).map((t, i) => Array.from( { length: t }, (_, j) => (t - j) * j > input.split("\n")[1].match(/\d+/g)[i] ).filter(Boolean).length).reduce((acc, curr) => acc * curr, 1);
 }
 
 function partTwo(input) {
