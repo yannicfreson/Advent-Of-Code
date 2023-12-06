@@ -36,6 +36,12 @@ function partTwo(input) {
   }
 
   return waysToBeat;
+
+  /* 
+  This can also be done with a one-liner, but it takes 46s to run vs the 65ms for the code above lmao
+  
+  Array.from({ length: parseInt(input.split('\n')[0].match(/\d+/g).join('')) }, (_, i) => (i * (parseInt(input.split('\n')[0].match(/\d+/g).join('')) - i)) > parseInt(input.split('\n')[1].match(/\d+/g).join(''))).filter(Boolean).length; 
+  */
 }
 
 main();
