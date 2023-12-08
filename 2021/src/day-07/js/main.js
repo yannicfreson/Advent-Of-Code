@@ -36,22 +36,22 @@ function partTwo(input) {
   let crabs = input.split(",").map(Number);
 
   let minFuelSpent = Infinity;
-  let minFuelSpentPosition = 0;
 
-  let smallestPosition = crabs.indexOf(Math.min(...crabs));
-  let largestPosition = crabs.indexOf(Math.max(...crabs));
+  let lowestPosition = crabs.sort((a, b) => a - b)[0];
+  let highestPosition = crabs.sort((a, b) => b - a)[0];
 
-  for (let i = smallestPosition; i < largestPosition; i++) {
+  for (let i = lowestPosition; i <= highestPosition; i++) {
     let fuelSpent = 0;
+    let distanceFromPosition;
     crabs.forEach((crab) => {
-      // calculate the distance between the crab and i, and add it to the fuelSpent. keep in mind that every move consumes 1 more fuel than the previous one. so if the crab moves 1 step, it consumes 1 fuel. if it moves 2 steps, it consumes 3 fuel. if it moves 3 steps, it consumes 6 fuel. and so on.
-      fuelSpent += Math.abs(crab - i);
+      distanceFromPosition = Math.abs(crab - i);
+      for (let j = 0; j < distanceFromPosition; j++) {
+        fuelSpent += j + 1;
+      }
     });
 
-    // if the fuelSpent is less than the minFuelSpent, set the minFuelSpent to the fuelSpent
     if (fuelSpent < minFuelSpent) {
       minFuelSpent = fuelSpent;
-      minFuelSpentPosition = i;
     }
   }
 
