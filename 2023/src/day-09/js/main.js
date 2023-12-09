@@ -1,7 +1,6 @@
 // Puzzle: https://adventofcode.com/2023/day/9
 
 const fs = require("fs");
-const { get } = require("http");
 
 const INPUT = fs
   .readFileSync("../../../../2023/data/day-09.txt", "utf8")
