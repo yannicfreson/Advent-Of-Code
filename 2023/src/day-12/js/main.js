@@ -1,111 +1,57 @@
 // Puzzle: https://adventofcode.com/2023/day/12
 
-const fs = require("fs");
-
-const INPUT = fs
-  .readFileSync("../../../../2023/data/day-12.txt", "utf8")
-  .trim();
+const INPUT = require("fs").readFileSync("../../../../2023/data/day-12.txt", "utf8").trim();
 
 function main() {
   let now = Date.now();
-  let part1 = partOne(INPUT);
-  let duration = Date.now() - now;
-  console.log(`Part 1: ${part1} (took: ${duration}ms)`);
+  console.log(`Part 1: ${partOne(INPUT)} (took: ${Date.now() - now}ms)`);
 
   now = Date.now();
-  let part2 = partTwo(INPUT);
-  duration = Date.now() - now;
-  console.log(`Part 2: ${part2} (took: ${duration}ms)`);
+  console.log(`Part 2: ${partTwo(INPUT)} (took: ${Date.now() - now}ms)`);
 }
 
-function partOne(input) {
-  const rows = input.split("\n").map((line) => line.split(" "));
+function partOne(input) {return input.split("\n").map((line) => {return [line.split(" ")[0].split(""),line.split(" ")[1].split(",").map((e) => parseInt(e))]}).reduce((validCombinations, row) => validCombinations + countValidCombinations({}, ...row, 0, 0, 0), 0)}
 
-  let totalCombinations = 0;
+function partTwo(input) {return partOne(input.split("\n").map((line) => [Array(5).fill(line.split(" ")[0]).join("?"), Array(5).fill(line.split(" ")[1]).join(",")].join(" ")).join("\n"))}
 
-  rows.forEach((spring, i) => {
-    const hotSprings = spring[0].split("");
-    const damagedHotSpringsGroups = rows[i][1]
-      .split(",")
-      .map((val) => parseInt(val));
+function countValidCombinations(cache, hotSprings, damagedHotSpringsGroups, hotSpringsIdx, damagedHotSpringsGroupsIdx, currentHotSpringsGroupCount) {
+  let validCombinations = 0;
 
-    const combinations = countCombinations(
-      hotSprings,
-      damagedHotSpringsGroups,
-      0
-    );
-    totalCombinations += combinations;
-  });
+  const key = [hotSpringsIdx, damagedHotSpringsGroupsIdx, currentHotSpringsGroupCount];
+  const damagedHotSpringsGroupsLength = damagedHotSpringsGroups.length;
+  const currentDamagedHotSpringsGroup = damagedHotSpringsGroups[damagedHotSpringsGroupsIdx];
+  const currentHotSpring = hotSprings[hotSpringsIdx];
+  const hotSpringsLength = hotSprings.length;
+  const isQuestionMark = currentHotSpring === "?";
+  const isDamagedHotSpring = currentHotSpring === "#";
+  const isWorkingHotSpring = currentHotSpring === ".";
 
-  return totalCombinations;
-}
+  if (key in cache) {
+    return cache[key];
+  }
 
-function partTwo(input) {
-  return partOne(
-    input
-      .split("\n")
-      .map((line) =>
-        [
-          Array(5).fill(line.split(" ")[0]).join("?"),
-          Array(5).fill(line.split(" ")[1]).join(","),
-        ].join(" ")
-      )
-      .join("\n")
-  );
-}
-
-function countDamagedHotSpringsGroups(hotSprings) {
-  let counter = 0;
-  const damagedHotSpringsGroups = [];
-
-  for (const hotSpring of hotSprings) {
-    if (hotSpring === "#") {
-      counter++;
-    } else if (hotSpring === ".") {
-      counter > 0 && damagedHotSpringsGroups.push(counter);
-      counter = 0;
+  if (hotSpringsIdx === hotSpringsLength) {
+    if (damagedHotSpringsGroupsIdx === damagedHotSpringsGroupsLength && currentHotSpringsGroupCount === 0) {
+      return 1;
     }
+
+    if (damagedHotSpringsGroupsIdx === damagedHotSpringsGroupsLength - 1 && currentDamagedHotSpringsGroup === currentHotSpringsGroupCount) {
+      return 1;
+    }
+
+    return 0;
   }
 
-  counter > 0 && damagedHotSpringsGroups.push(counter);
-  return damagedHotSpringsGroups;
-}
-
-function countCombinations(hotSprings, damagedHotSpringsGroups, index) {
-  if (index === hotSprings.length) {
-    return countDamagedHotSpringsGroups(hotSprings).toString() ===
-      damagedHotSpringsGroups.toString()
-      ? 1
-      : 0;
+  (isDamagedHotSpring || isQuestionMark) ? validCombinations += countValidCombinations(cache, hotSprings, damagedHotSpringsGroups, hotSpringsIdx + 1, damagedHotSpringsGroupsIdx, currentHotSpringsGroupCount + 1) : null;
+  
+  if (isWorkingHotSpring || isQuestionMark) {
+    currentHotSpringsGroupCount === 0 ? validCombinations += countValidCombinations(cache, hotSprings, damagedHotSpringsGroups, hotSpringsIdx + 1, damagedHotSpringsGroupsIdx, 0) : null;
+    (currentHotSpringsGroupCount > 0 && damagedHotSpringsGroupsIdx < damagedHotSpringsGroupsLength && currentDamagedHotSpringsGroup === currentHotSpringsGroupCount) ? validCombinations += countValidCombinations(cache, hotSprings, damagedHotSpringsGroups, hotSpringsIdx + 1, damagedHotSpringsGroupsIdx + 1, 0) : null;
   }
+  
+  cache[key] = validCombinations
 
-  let combinations = 0;
-
-  if (hotSprings[index] === "?") {
-    hotSprings[index] = ".";
-    combinations += countCombinations(
-      [...hotSprings],
-      damagedHotSpringsGroups,
-      index + 1
-    );
-
-    hotSprings[index] = "#";
-    combinations += countCombinations(
-      [...hotSprings],
-      damagedHotSpringsGroups,
-      index + 1
-    );
-
-    hotSprings[index] = "?";
-  } else {
-    combinations += countCombinations(
-      hotSprings,
-      damagedHotSpringsGroups,
-      index + 1
-    );
-  }
-
-  return combinations;
+  return (validCombinations);
 }
 
 main();
