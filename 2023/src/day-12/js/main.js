@@ -1,15 +1,21 @@
 // Puzzle: https://adventofcode.com/2023/day/12
 
-const INPUT = require("fs")
-  .readFileSync("../../../../2023/data/day-12.txt", "utf8")
+const fs = require("fs");
+
+const INPUT = fs
+  .readFileSync("../../../../2023/data/day-10.txt", "utf8")
   .trim();
 
 function main() {
   let now = Date.now();
-  console.log(`Part 1: ${partOne(INPUT)} (took: ${Date.now() - now}ms)`);
+  let part1 = partOne(INPUT);
+  let duration = Date.now() - now;
+  console.log(`Part 1: ${part1} (took: ${duration}ms)`);
 
   now = Date.now();
-  console.log(`Part 2: ${partTwo(INPUT)} (took: ${Date.now() - now}ms)`);
+  let part2 = partTwo(INPUT);
+  duration = Date.now() - now;
+  console.log(`Part 2: ${part2} (took: ${duration}ms)`);
 }
 
 function partOne(input) {
