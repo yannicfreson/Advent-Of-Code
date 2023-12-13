@@ -3,7 +3,7 @@
 const fs = require("fs");
 
 const INPUT = fs
-  .readFileSync("../../../../2023/data/day-10.txt", "utf8")
+  .readFileSync("../../../../2023/data/day-12.txt", "utf8")
   .trim();
 
 function main() {
