@@ -19,6 +19,41 @@ function main() {
 }
 
 function partOne(input) {
+  return calculateLoadOfMatrix(slideRocks(input));
+}
+
+function partTwo(input) {
+  let temp = input;
+  let rotations = 0;
+  let cycles = 0;
+  let seenConfigs = [];
+
+  while (true) {
+    temp = slideRocks(temp);
+
+    temp = matrixToString(rotateMatrix(stringTomatrix(temp)));
+
+    rotations++;
+
+    if (rotations === 4) {
+      rotations = 0;
+      cycles++;
+
+      if (seenConfigs.includes(temp)) {
+        let cycleLength = seenConfigs.length - seenConfigs.indexOf(temp);
+
+        let finalIdx =
+          seenConfigs.indexOf(temp) + ((1000000000 - cycles) % cycleLength);
+
+        return calculateLoadOfMatrix(seenConfigs[finalIdx]);
+      } else {
+        seenConfigs.push(temp);
+      }
+    }
+  }
+}
+
+function slideRocks(input) {
   let lines = input.split("\n");
   let cols = [];
   let shiftedCols = [];
@@ -32,7 +67,6 @@ function partOne(input) {
     });
   });
 
-  // for each col, get the index of all the #s and 0s
   cols.forEach((col, i) => {
     let temp = {
       roundRocksIdxs: [],
@@ -86,8 +120,19 @@ function partOne(input) {
     shiftedCols.map((row) => row[colIndex])
   );
 
+  return shiftedColsRotated90Degrees.map((row) => row.join("")).join("\n");
+}
+
+function calculateLoadOfMatrix(input) {
   let totalLoad = 0;
-  shiftedCols.forEach((col, i) => {
+  let inputAsMatrix = stringTomatrix(input);
+
+  // i wrote my rotate function to rotate clockwise, so i need to rotate 3 times. this is easier than rewriting the function. sorrynotsorry
+  inputAsMatrix = rotateMatrix(inputAsMatrix);
+  inputAsMatrix = rotateMatrix(inputAsMatrix);
+  inputAsMatrix = rotateMatrix(inputAsMatrix);
+
+  inputAsMatrix.forEach((col, i) => {
     let roundRocksIdxs = [];
     col.forEach((char, j) => {
       if (char === "O") {
@@ -104,6 +149,29 @@ function partOne(input) {
   return totalLoad;
 }
 
-function partTwo(input) {}
+function rotateMatrix(matrix) {
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = i + 1; j < cols; j++) {
+      [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+    }
+  }
+
+  for (let i = 0; i < rows; i++) {
+    matrix[i].reverse();
+  }
+
+  return matrix;
+}
+
+function matrixToString(temp) {
+  return temp.map((row) => row.join("")).join("\n");
+}
+
+function stringTomatrix(temp) {
+  return temp.split("\n").map((row) => row.split(""));
+}
 
 main();
