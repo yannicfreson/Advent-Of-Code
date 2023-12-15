@@ -23,7 +23,11 @@ function partOne(input) {
 }
 
 function partTwo(input) {
-  return Array.from(holidayAsciiStringHelperManualArrangementProcedure(input)).reduce((sum, [key, box]) => sum + box.reduce((temp, [_, focalLength], i) => temp + parseInt(focalLength) * (i + 1), 0) * (parseInt(key) + 1), 0);
+  return calculateFocusingPower(holidayAsciiStringHelperManualArrangementProcedure(input));
+}
+
+function calculateFocusingPower(array) {
+  return array.reduce((sum, [key, box]) => sum + box.reduce((temp, [_, focalLength], i) => temp + parseInt(focalLength) * (i + 1), 0) * (parseInt(key) + 1), 0)
 }
 
 function holidayAsciiStringHelperAlgorithmAppendix1A(s) {
@@ -45,8 +49,8 @@ function holidayAsciiStringHelperManualArrangementProcedure(input) {
 
     operation === "=" ? box.findIndex((x) => x[0] === label) > -1 ? (box[box.findIndex((x) => x[0] === label)][1] = focalLength) : box.push([label, focalLength]) : box.findIndex((x) => x[0] === label) > -1 && box.splice(box.findIndex((x) => x[0] === label), 1);
   });
-
-  return boxes;
+  
+  return Array.from(boxes);
 }
 
 main();
